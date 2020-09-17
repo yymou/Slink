@@ -12,7 +12,7 @@ use Slink\Component\Single;
 use Slink\Process\Slink;
 use Slink\Process\Olink;
 
-class Core
+class App
 {
     use Single;
 
