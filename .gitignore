@@ -1,0 +1,9 @@
+# ide
+/.idea/
+
+# composer
+/vendor/
+composer.lock
+
+# .DS_Store
+.DS_Store
