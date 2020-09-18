@@ -11,6 +11,7 @@
     }
   ],
   "require": {
+    "yymou/slink": "1.0",
     "php": ">=7.0.0"
   },
   "autoload": {
