@@ -1,8 +1,8 @@
 <?php
 namespace Slink\Cache;
 
+use Slink\Component\Bfhash;
 use Slink\Component\Single;
-use Slink\Component\Di;
 use Slink\Config;
 /**
  * redis操作类
@@ -22,6 +22,7 @@ class Redis
 
     const STRING_NAME = 'STRING_NAME';
     const SET_NAME = 'SET_NAME';
+    const BF_NAME = 'BIT_NAME';
     const HASH_NAME = 'HASH_NAME';
     const INCR_NAME = 'INCR_NAME';
 
@@ -128,5 +129,32 @@ class Redis
     public function getShort(string $originlink) : ?string
     {
         return $this->read()->get($this->getName(self::STRING_NAME . ':' . $originlink));
+    }
+
+    public function addBfBit(array $hash_funcs, string $string)
+    {
+        $pipe = $this->getMulti('write');
+        foreach ($hash_funcs as $function) {
+            $hash = Bfhash::getInstance()->$function($string);
+            $pipe->setBit($this->getName(self::BF_NAME), $hash, 1);
+        }
+        return $pipe->exec();
+    }
+
+    public function existsBfBit(array $hash_funcs, string $string)
+    {
+        $pipe = $this->getMulti('read');
+        $len = strlen($string);
+        foreach ($hash_funcs as $function) {
+            $hash = Bfhash::getInstance()->$function($string, $len);
+            $pipe = $pipe->getBit($this->getName(self::BF_NAME), $hash);
+        }
+        $res = $pipe->exec();
+        foreach ($res as $bit) {
+            if ($bit == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

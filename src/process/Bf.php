@@ -9,7 +9,6 @@
 namespace Slink\Process;
 
 use Slink\Component\Single;
-use Slink\Component\Bfhash;
 use Slink\Cache\Redis;
 
 class Bf
@@ -18,26 +17,15 @@ class Bf
     /**
      * 需要使用一个方法来定义bucket的名字
      */
-    protected $bucket = 'bf';
-
     protected $hashFunction = ['BkdrHash', 'SdbmHash', 'JsHash'];
 
-    public function __construct()
-    {
-        $this->Hash = Bfhash::getInstance();
-    }
 
     /**
      * 添加到集合中
      */
     public function add($string)
     {
-        $pipe = Redis::getInstance()->getMulti('write');
-        foreach ($this->hashFunction as $function) {
-            $hash = $this->Hash->$function($string);
-            $pipe->setBit($this->bucket, $hash, 1);
-        }
-        return $pipe->exec();
+        return Redis::getInstance()->addBfBit($this->hashFunction, $string);
     }
 
     /**
@@ -45,19 +33,7 @@ class Bf
      */
     public function exists($string)
     {
-        $pipe = Redis::getInstance()->getMulti('read');
-        $len = strlen($string);
-        foreach ($this->hashFunction as $function) {
-            $hash = $this->Hash->$function($string, $len);
-            $pipe = $pipe->getBit($this->bucket, $hash);
-        }
-        $res = $pipe->exec();
-        foreach ($res as $bit) {
-            if ($bit == 0) {
-                return false;
-            }
-        }
-        return true;
+        return Redis::getInstance()->existsBfBit($this->hashFunction, $string);
     }
 }
 
