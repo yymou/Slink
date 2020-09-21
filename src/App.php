@@ -20,8 +20,6 @@ class App
     public function __construct()
     {
         defined('SLINK_ROOT') or define('SLINK_ROOT', realpath(getcwd()));
-        //加载配置文件
-        $this->loadEnv();
     }
 
     //设置redis通用配置
@@ -72,16 +70,6 @@ class App
         $this->shortLink = Olink::getInstance($short_link)->start();
         if (!empty($this->shortLink)) {
             return $this->shortLink;
-        }
-    }
-
-    private function loadEnv()
-    {
-        $file = SLINK_ROOT . '/env.php';
-        if(file_exists($file)){
-            Config::getInstance()->loadEnv($file);
-        }else{
-            die('env file missing');
         }
     }
 }
