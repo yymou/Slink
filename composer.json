@@ -1,6 +1,6 @@
 {
   "name": "yymou/slink",
-  "description": "Generate short url | 轻量级稳定易用的生成和还原短链接的PHP扩展",
+  "description": "Generate short url | PHP实现轻量稳定且易用短链接短网址服务",
   "license": "MIT",
   "keywords": ["shorturl slink php"],
   "authors": [
