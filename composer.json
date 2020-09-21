@@ -3,7 +3,6 @@
   "description": "Generate short url",
   "license": "MIT",
   "keywords": ["shorturl slink php"],
-  "version": "1.0.2",
   "authors": [
     {
       "name": "yangyanlei",
@@ -14,5 +13,8 @@
     "psr-4": {
       "Slink\\": "src/"
     }
+  },
+  "require": {
+    "php": ">=7.1.0"
   }
 }
