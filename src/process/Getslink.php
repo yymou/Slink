@@ -20,7 +20,7 @@ class Getslink
 
     public function __construct()
     {
-        $this->slinkLen = Config::getInstance()->getEnv('linklen') ?? $this->slinkLen;
+        $this->slinkLen = Config::getInstance()->getSlinkLen() ?? $this->slinkLen;
         if ($this->slinkLen < 4) {
             die('Slink length setting is too short');
         }

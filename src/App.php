@@ -24,6 +24,39 @@ class App
         $this->loadEnv();
     }
 
+    //设置redis通用配置
+//    public function setCommonRedis(array $params) : void
+//    {
+//    }
+
+//    //设置redis读写配置
+//    public function setClusterRedis(array $params) : void
+//    {
+//    }
+
+//    public function setSlinkLen(int $length) : void
+//    {
+//    }
+
+//    public function setOlinkCacheTtl(int $time_out) : void
+//    {
+//    }
+
+//    //设置redis前缀
+//    public function setRedisPrefix(string $prefix) : void
+//    {
+//    }
+
+    //设置和获取配置
+    public function __call($func_name, $arg)
+    {
+        try {
+            Config::getInstance()->$func_name($arg[0]);
+        } catch (Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
     //获取短连接
     public function getSlink(string $origin_link) : ?string
     {

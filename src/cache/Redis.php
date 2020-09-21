@@ -18,7 +18,7 @@ class Redis
 
     private $handler;
 
-    private $prefix = '';
+    private $prefix = 'slink';
 
     const STRING_NAME = 'STRING_NAME';
     const SET_NAME = 'SET_NAME';
@@ -44,31 +44,44 @@ class Redis
     public function conn($mode = 'read')
     {
         //读取配置
-        $params = Config::getInstance()->getEnv('redis');
-        if (empty($params)) {
-            throw new \Exception("redis config params can not empty");
+        //$params = Config::getInstance()->getEnv('redis');
+        //是否配置通用
+        $common_redis = Config::getInstance()->getCommonRedis();
+        if (!empty($common_redis)) {
+            $connect = $common_redis;
+        } else {
+            //查看读写库
+            $cluster_redis = Config::getInstance()->getClusterRedis();
+            if (!empty($cluster_redis)) {
+                if (isset($cluster_redis[$mode])) {
+                    //读写库
+                    if ($mode == 'read') {
+                        //读库
+                        $rand_number = rand(0, count($cluster_redis[$mode]) - 1);
+                        $connect = $cluster_redis[$mode][$rand_number];
+                    } else if($mode == 'write') {
+                        $connect = $cluster_redis[$mode];
+                    }
+                }
+            }
         }
-        //读写库
-        if ($mode == 'read') {
-            //读库
-            $rand_number = rand(0, $params['read']['count'] - 1);
-            $connect = $params['read'][$rand_number];
-        } else if($mode == 'write') {
-            $connect = $params['write'];
+        if (empty($connect)) {
+            throw new \Exception("redis config params can not empty");
         }
         $timeout = isset($connect['timeout']) ? $connect['timeout'] : 10;
 
         //是否有前缀
-        if (isset($params['prefix']) && !empty($params['prefix'])) {
-            $this->prefix = $params['prefix'];
+        $redis_prefix = Config::getInstance()->getRedisPrefix();
+
+        if (!empty($redis_prefix)) {
+            $this->prefix = $redis_prefix;
         }
 
         //是否开启扩展
         if (extension_loaded('redis')) {
             $this->handler[$mode] = new \Redis;
-            $this->handler[$mode]->connect($connect['hostname'], $connect['port'], $timeout);
-
-            if ($connect['password'] != '') {
+            $this->handler[$mode]->connect($connect['hostname'], $connect['port'] ?? 6379, $timeout);
+            if (isset($connect['password']) && $connect['password'] != '') {
                 $this->handler[$mode]->auth($connect['password']);
             }
         } else {
@@ -109,7 +122,7 @@ class Redis
     }
 
     public function saveOriginlink(string $originlink, ?string $shortlink) {
-        return $this->write()->setex($this->getName(self::STRING_NAME . ':' . $originlink), Config::getInstance()->getEnv('redis.orilinkTtl') ?? 86400, $shortlink);
+        return $this->write()->setex($this->getName(self::STRING_NAME . ':' . $originlink), Config::getInstance()->getOlinkCacheTtl() ?? 86400, $shortlink);
     }
 
     public function getShort(string $originlink) : ?string
