@@ -3,8 +3,8 @@
 底层使用redis发号器递增转换成62进制,但根据简单算法实现了短链接非递增返回. 解析短链依托redis,速度快.
 
 #### 使用:
-+ 1 引入composer
-  + 执行 'composer require yymou/slink'
++ 1 使用composer引入
+  + 执行 `composer require yymou/slink`
   + 项目中引入composer `require 'vendor/autoload.php';`
   
 + 2 项目中使用
