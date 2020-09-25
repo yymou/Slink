@@ -23,25 +23,14 @@
           Slink\App::getInstance()->setClusterRedis([
                'write' => [
                    'hostname' => '127.0.0.2',
-                   'username' => '',
-                   'password' => '',
-                   'database' => '0',
-                   'port' => '6379',
-                   'timeout' => '5'
                ],
                //支持设置多个读库
                'read' => [
                    [
                        'hostname' => '127.0.0.3',
-                       'password' => '',
-                       'port' => '6379',
-                       'timeout' => '5'
                    ],
                    [
                        'hostname' => '127.0.0.4',
-                       'password' => '',
-                       'port' => '6379',
-                       'timeout' => '5'
                    ]
                ],
            ]);
