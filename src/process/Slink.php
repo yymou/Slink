@@ -50,14 +50,9 @@ class Slink
     //检查短链是否存在
     private function checkLink() : bool
     {
-        $is_exist = Bf::getInstance()->exists($this->originLink);
-
-        //如果存在查询具体数据
-        if ($is_exist) {
-            $this->shortLink = Redis::getInstance()->getShort(urlencode($this->originLink));
-            if (!empty($this->shortLink)) {
-                return true;
-            }
+        $this->shortLink = Redis::getInstance()->getShort(urlencode($this->originLink));
+        if (!empty($this->shortLink)) {
+            return true;
         }
         return false;
     }
@@ -75,8 +70,6 @@ class Slink
         Redis::getInstance()->setLinkHash($this->save_alias, $this->shortLink, urlencode($this->originLink));
         //设置origin-short的缓存
         Redis::getInstance()->saveOriginlink(urlencode($this->originLink), $this->shortLink);
-        //添加到布隆过滤器
-        Bf::getInstance()->add($this->originLink);
     }
 
 }
