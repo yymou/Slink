@@ -18,6 +18,8 @@ class Redis
 
     private $handler;
 
+    private $hardHandler;
+
     private $prefix = 'slink';
 
     const STRING_NAME = 'STRING_NAME';
@@ -26,16 +28,30 @@ class Redis
     const HASH_NAME = 'HASH_NAME';
     const INCR_NAME = 'INCR_NAME';
 
+    public function __construct()
+    {
+        //是否有现有的redis实例
+        $this->hardHandler = Config::getInstance()->getRedisConnect() ?? null;
+    }
+
     //读库
     private function read()
     {
-        $this->conn('read');
+        if (!empty($this->hardHandler)) {
+            return $this->hardHandler;
+        }
+        if (!isset($this->handler['read'])) {
+            $this->conn();
+        }
         return $this->handler['read'];
     }
 
     //写库
     private function write()
     {
+        if (!empty($this->hardHandler)) {
+            return $this->hardHandler;
+        }
         if (!isset($this->handler['write'])) {
             $this->conn('write');
         }
@@ -84,6 +100,9 @@ class Redis
             $this->handler[$mode]->connect($connect['hostname'], $connect['port'] ?? 6379, $timeout);
             if (isset($connect['password']) && $connect['password'] != '') {
                 $this->handler[$mode]->auth($connect['password']);
+            }
+            if (isset($connect['database']) && $connect['database'] != '') {
+                $this->handler[$mode]->select($connect['database']);
             }
         } else {
             throw new \BadFunctionCallException('not support: redis');

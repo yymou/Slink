@@ -22,29 +22,6 @@ class App
         defined('SLINK_ROOT') or define('SLINK_ROOT', realpath(getcwd()));
     }
 
-    //设置redis通用配置
-//    public function setCommonRedis(array $params) : void
-//    {
-//    }
-
-//    //设置redis读写配置
-//    public function setClusterRedis(array $params) : void
-//    {
-//    }
-
-//    public function setSlinkLen(int $length) : void
-//    {
-//    }
-
-//    public function setOlinkCacheTtl(int $time_out) : void
-//    {
-//    }
-
-//    //设置redis前缀
-//    public function setRedisPrefix(string $prefix) : void
-//    {
-//    }
-
     //设置和获取配置
     public function __call($func_name, $arg)
     {
