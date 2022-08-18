@@ -1,6 +1,6 @@
 <?php
 
-namespace Slink\Component;
+namespace Slink\component;
 
 /**
  * 依赖注入类

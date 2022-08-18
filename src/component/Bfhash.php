@@ -6,7 +6,7 @@
  * Ctime 2020/9/15
  */
 
-namespace Slink\Component;
+namespace Slink\component;
 
 class Bfhash
 {

@@ -2,9 +2,9 @@
 
 namespace Slink;
 
-use Slink\Component\Single;
-use Slink\Component\Di;
-use Slink\Cache\Redis;
+use Slink\component\Single;
+use Slink\component\Di;
+use Slink\cache\Redis;
 
 /**
  * 配置类

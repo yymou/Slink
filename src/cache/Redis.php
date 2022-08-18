@@ -1,8 +1,8 @@
 <?php
-namespace Slink\Cache;
+namespace Slink\cache;
 
-use Slink\Component\Bfhash;
-use Slink\Component\Single;
+use Slink\component\Bfhash;
+use Slink\component\Single;
 use Slink\Config;
 /**
  * redis操作类

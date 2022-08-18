@@ -5,11 +5,11 @@
  * @email yangyanlei@dangdang.com
  * Ctime 2020/9/15
  */
-namespace Slink\Process;
+namespace Slink\process;
 
-use Slink\Component\Single;
-use Slink\Cache\Redis;
-use Slink\Component\Conver;
+use Slink\component\Single;
+use Slink\cache\Redis;
+use Slink\component\Conver;
 use Slink\Config;
 
 class Slink

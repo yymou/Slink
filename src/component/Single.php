@@ -6,7 +6,7 @@
  * Ctime 2020/9/8
  */
 
-namespace Slink\Component;
+namespace Slink\component;
 
 trait Single
 {

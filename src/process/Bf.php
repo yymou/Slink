@@ -6,10 +6,10 @@
  * Ctime 2020/9/15
  */
 
-namespace Slink\Process;
+namespace Slink\process;
 
-use Slink\Component\Single;
-use Slink\Cache\Redis;
+use Slink\component\Single;
+use Slink\cache\Redis;
 
 class Bf
 {

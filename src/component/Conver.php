@@ -6,7 +6,7 @@
  * Ctime 2020/9/16
  */
 
-namespace Slink\Component;
+namespace Slink\component;
 
 use Slink\Config;
 

@@ -1,9 +1,9 @@
 <?php
-namespace Slink\Process;
+namespace Slink\process;
 
-use Slink\Component\Single;
+use Slink\component\Single;
 use Slink\Config;
-use Slink\Component\Conver;
+use Slink\component\Conver;
 
 /**
  * 获取slink处理类

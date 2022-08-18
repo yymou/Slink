@@ -8,9 +8,9 @@
 
 namespace Slink;
 
-use Slink\Component\Single;
-use Slink\Process\Slink;
-use Slink\Process\Olink;
+use Slink\component\Single;
+use Slink\process\Slink;
+use Slink\process\Olink;
 
 class App
 {
