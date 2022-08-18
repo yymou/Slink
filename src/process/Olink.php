@@ -10,7 +10,6 @@ namespace Slink\Process;
 use Slink\Component\Single;
 use Slink\Cache\Redis;
 use Slink\Component\Conver;
-use Slink\Config;
 
 class Olink
 {
@@ -36,13 +35,8 @@ class Olink
      */
     public function start()
     {
-        //获取短链的最后一位数字
-        $this->save_alias = substr($this->shortLink, -1);
         //检查是否存在
-        $ignoreCheck = Config::getInstance()->getIgnoreCheck() ?? false;
-        if (!$ignoreCheck) {
-            $this->checkLink();
-        }
+        $this->checkLink();
         $this->getOlink();
 
         return $this->originLink ?? '';
@@ -51,6 +45,8 @@ class Olink
     //检查短链是否存在
     private function checkLink()
     {
+        //获取短链的最后一位数字
+        $this->save_alias = substr($this->shortLink, -1);
         $is_exist = Redis::getInstance()->checkLinkHash($this->save_alias, $this->shortLink);
         if (!$is_exist) {
             die('slink error');
