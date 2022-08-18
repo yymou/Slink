@@ -32,6 +32,12 @@ class Redis
     {
         //是否有现有的redis实例
         $this->hardHandler = Config::getInstance()->getRedisConnect() ?? null;
+
+        //是否有前缀
+        $redis_prefix = Config::getInstance()->getRedisPrefix();
+        if (!empty($redis_prefix)) {
+            $this->prefix = $redis_prefix;
+        }
     }
 
     //读库
@@ -86,13 +92,6 @@ class Redis
             throw new \Exception("redis config params can not empty");
         }
         $timeout = isset($connect['timeout']) ? $connect['timeout'] : 10;
-
-        //是否有前缀
-        $redis_prefix = Config::getInstance()->getRedisPrefix();
-
-        if (!empty($redis_prefix)) {
-            $this->prefix = $redis_prefix;
-        }
 
         //是否开启扩展
         if (extension_loaded('redis')) {

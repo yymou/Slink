@@ -10,6 +10,7 @@ namespace Slink\Process;
 use Slink\Component\Single;
 use Slink\Cache\Redis;
 use Slink\Component\Conver;
+use Slink\Config;
 
 class Slink
 {
@@ -69,8 +70,10 @@ class Slink
     {
         Redis::getInstance()->setLinkHash($this->save_alias, $this->shortLink, urlencode($this->originLink));
         //设置origin-short的缓存
-        Redis::getInstance()->saveOriginlink(urlencode($this->originLink), $this->shortLink);
+        $ignoreCheck = Config::getInstance()->getIgnoreCheck() ?? false;
+        if (!$ignoreCheck) {
+            Redis::getInstance()->saveOriginlink(urlencode($this->originLink), $this->shortLink);
+        }
     }
-
 }
 ?>

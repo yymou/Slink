@@ -10,6 +10,7 @@ namespace Slink\Process;
 use Slink\Component\Single;
 use Slink\Cache\Redis;
 use Slink\Component\Conver;
+use Slink\Config;
 
 class Olink
 {
@@ -36,7 +37,10 @@ class Olink
     public function start()
     {
         //检查是否存在
-        $this->checkLink();
+        $ignoreCheck = Config::getInstance()->getIgnoreCheck() ?? false;
+        if (!$ignoreCheck) {
+            $this->checkLink();
+        }
         $this->getOlink();
 
         return $this->originLink ?? '';
